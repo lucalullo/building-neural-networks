@@ -304,4 +304,8 @@ Each version includes an English and an Italian PDF report. The repository also 
 
 ## License
 
-This project is released under the [MIT License](LICENSE).
+This project is distributed under the [MIT License](LICENSE).
+
+## Author
+
+Created by [Luca Lullo](https://github.com/lucalullo).
