@@ -1,12 +1,5 @@
 # Building Neural Networks
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
-![Jupyter Notebook](https://img.shields.io/badge/Jupyter-Notebook-F37626?logo=jupyter&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-Numerical-013243?logo=numpy&logoColor=white)
-![Pandas](https://img.shields.io/badge/pandas-Data-150458?logo=pandas&logoColor=white)
-![Fashion-MNIST](https://img.shields.io/badge/Fashion--MNIST-Dataset-2C3E50)
-![Neural Networks](https://img.shields.io/badge/Neural%20Networks-From%20Scratch-8A2BE2)
-
 A progressive educational project that shows how to build **neural networks from scratch**, starting from a single neuron for binary classification and evolving step by step toward multiclass classification, hidden layers, backpropagation, mini-batch training and a simple deep neural network.
 
 The project uses the **Fashion-MNIST dataset** as a constant practical laboratory. Keeping the same dataset across the main multiclass versions makes each architectural and training change easier to inspect and compare.
@@ -15,7 +8,13 @@ The implementation intentionally avoids ready-made neural-network estimators. We
 
 Version 5 completes the original five-stage roadmap with a simple deep neural network containing two hidden layers.
 
-## Project roadmap
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?logo=jupyter&logoColor=white) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Kaggle Notebook](https://img.shields.io/badge/Kaggle-Notebook-20BEFF?logo=kaggle&logoColor=white)](https://www.kaggle.com/code/lucalullo/building-neural-networks)
+
+[Kaggle notebook](https://www.kaggle.com/code/lucalullo/building-neural-networks) · [GitHub repository](https://github.com/lucalullo/building-neural-networks) · [Technical report](project-report-en.pdf)
+
+![Project roadmap and architecture](infographic.png)
+
+## Overview
 
 The project follows one main principle:
 
@@ -35,52 +34,7 @@ Version 1 introduces a **Simple Single Neuron**:
 
 Version 2 adds **Multiclass Classification**:
 
-1. extend the problem to all 10 Fashion-MNIST classes;
-2. one-hot encode the targets;
-3. replace the single output neuron with 10 output neurons;
-4. apply numerically stable softmax;
-5. use multiclass cross-entropy;
-6. train with full-batch gradient descent;
-7. select the final class with `argmax`.
-
-Version 3 adds a **Single Hidden Layer**:
-
-1. introduce a 64-neuron hidden layer;
-2. use ReLU activation;
-3. initialize weights randomly with a He-style strategy;
-4. propagate inputs through multiple layers;
-5. compute output gradients;
-6. backpropagate gradients through the hidden layer;
-7. update both parameterized layers.
-
-Version 4 adds **Mini-Batch Training**:
-
-1. shuffle the training data at the start of each epoch;
-2. divide the data into mini-batches of 64 samples;
-3. run forward propagation for each mini-batch;
-4. run backpropagation for each mini-batch;
-5. update parameters after every batch;
-6. clip probabilities inside the logarithm for numerical stability.
-
-Version 5 adds a **Simple Deep Neural Network**:
-
-1. introduce a second hidden layer;
-2. use the architecture `784 → 128 → 64 → 10`;
-3. keep ReLU hidden activations;
-4. keep softmax output probabilities;
-5. train with mini-batch gradient descent;
-6. propagate gradients through both hidden layers;
-7. combine the concepts introduced across the previous versions.
-
-Each version preserves the previous implementation as much as possible so that the effect of the new concept can be studied in isolation.
-
-Version 5 completes the original project roadmap.
-
-![Building Neural Networks infographic](infographic.png)
-
 ## Current capabilities
-
-The final implementation can:
 
 - load the Fashion-MNIST training and test CSV datasets;
 - flatten each 28×28 image into 784 input features;
@@ -94,24 +48,8 @@ The final implementation can:
 - perform forward propagation through multiple parameterized layers;
 - compute analytical gradients;
 - backpropagate gradients through hidden layers;
-- train with full-batch gradient descent;
-- train with mini-batch gradient descent;
-- shuffle training data between epochs;
-- update parameters after every mini-batch;
-- predict multiclass labels with `argmax`;
-- train a simple deep neural network without TensorFlow, PyTorch or scikit-learn models.
 
-The final Version 5 architecture uses:
-
-```text
-Input features          → 784
-First hidden layer      → 128 ReLU neurons
-Second hidden layer     → 64 ReLU neurons
-Output layer            → 10 softmax neurons
-Training strategy       → mini-batch gradient descent
-```
-
-## Current architecture
+## Architecture
 
 ```text
 Fashion-MNIST CSV Data
@@ -162,54 +100,35 @@ Fashion-MNIST Prediction
 
 The key transition in Version 5 is that backpropagation no longer passes through only one hidden representation. Gradients are propagated through two hidden layers, allowing the project to demonstrate the mechanics of a deeper network while keeping every calculation explicit.
 
-## Project versions
+## Version guide
 
-| Version | Main concept | Status |
-|---|---|---|
-| Version 1 | Simple Single Neuron | Complete |
-| Version 2 | Multiclass Neural Network | Complete |
-| Version 3 | Single Hidden Layer Network | Complete |
-| Version 4 | Mini-Batch Neural Network | Complete |
-| Version 5 | Simple Deep Neural Network | Complete |
+| Version | Focus | Notebook and resources |
+|---:|---|---|
+| 1 | Simple Single Neuron | [`v1-simple-single-neuron/`](v1-simple-single-neuron/) |
+| 2 | Multiclass Neural Network | [`v2-multiclass-neural-network/`](v2-multiclass-neural-network/) |
+| 3 | Single Hidden Layer Network | [`v3-single-hidden-layer-network/`](v3-single-hidden-layer-network/) |
+| 4 | Mini-Batch Neural Network | [`v4-mini-batch-neural-network/`](v4-mini-batch-neural-network/) |
+| 5 | Simple Deep Neural Network | [`v5-simple-deep-neural-network/`](v5-simple-deep-neural-network/) |
 
-## Version 1 - Simple Single Neuron
+### What each version introduces
+
+<details>
+<summary>Version 1 - Simple Single Neuron</summary>
 
 Version 1 establishes the complete learning loop with a single neuron.
 
 Fashion-MNIST is reduced to a binary classification problem using only:
-
-```text
-0 → T-shirt/top
-1 → Trouser
-```
-
-Each 28×28 image is flattened into **784 input features** and normalized from `0-255` to `0-1`.
-
-The model implements:
 
 - one neuron;
 - weighted input `X @ w + b`;
 - sigmoid activation;
 - binary cross-entropy loss;
 - gradient descent;
-- a `0.5` classification threshold;
-- loss-based stopping with a tolerance.
 
-The weights and bias start at zero and are updated directly from the analytical gradients.
+</details>
 
-Saved notebook results:
-
-```text
-Training loss      → 0.0305
-Training accuracy  → 98.97%
-Test accuracy      → 99.15%
-```
-
-![Version 1](v1-simple-single-neuron/Version%201.png)
-
-Version 1 is intentionally limited to two Fashion-MNIST classes so that the complete learning process remains visible before introducing multiclass classification.
-
-## Version 2 - Multiclass Neural Network
+<details>
+<summary>Version 2 - Multiclass Neural Network</summary>
 
 Version 2 extends the model to all **10 Fashion-MNIST classes**.
 
@@ -220,91 +139,43 @@ The single output neuron becomes a linear output layer with 10 neurons. The mode
 - numerically stable softmax;
 - multiclass cross-entropy;
 - full-batch gradient descent;
-- `argmax` class prediction.
 
-There are still no hidden layers, so the model remains a linear classifier in pixel space.
+</details>
 
-Saved notebook results:
-
-```text
-Training loss      → 0.5092
-Training accuracy  → 83.13%
-Test accuracy      → 83.42%
-```
-
-![Version 2](v2-multiclass-neural-network/Version%202.png)
-
-## Version 3 - Single Hidden Layer Network
+<details>
+<summary>Version 3 - Single Hidden Layer Network</summary>
 
 Version 3 introduces the first non-linear hidden representation.
 
-Architecture:
-
-```text
-784 inputs → 64 ReLU neurons → 10 softmax outputs
-```
-
-New concepts include:
+The implementation explicitly computes every gradient needed to update both layers.
 
 - a 64-neuron hidden layer;
 - ReLU activation;
 - He-style random weight initialization;
 - forward propagation through multiple layers;
 - backpropagation through the output and hidden layers;
-- fixed-epoch training.
 
-The implementation explicitly computes every gradient needed to update both layers.
+</details>
 
-Saved notebook results:
-
-```text
-Training loss      → 0.5895
-Training accuracy  → 79.03%
-Test accuracy      → 79.02%
-```
-
-![Version 3](v3-single-hidden-layer-network/Version%203.png)
-
-## Version 4 - Mini-Batch Neural Network
+<details>
+<summary>Version 4 - Mini-Batch Neural Network</summary>
 
 Version 4 keeps the same one-hidden-layer architecture but changes how the model is trained.
 
-Architecture:
-
-```text
-784 inputs → 64 ReLU neurons → 10 softmax outputs
-```
-
-Training now introduces:
+This is a major practical step toward the training loop used by modern neural networks.
 
 - random shuffling at the start of each epoch;
 - mini-batches of 64 samples;
 - forward propagation per mini-batch;
 - backpropagation per mini-batch;
 - parameter updates after every batch;
-- clipped probabilities inside the logarithm for numerical stability.
 
-This is a major practical step toward the training loop used by modern neural networks.
+</details>
 
-Saved notebook results:
-
-```text
-Training loss      → 0.0695
-Training accuracy  → 95.75%
-Test accuracy      → 87.28%
-```
-
-![Version 4](v4-mini-batch-neural-network/Version%204.png)
-
-## Version 5 - Simple Deep Neural Network
+<details>
+<summary>Version 5 - Simple Deep Neural Network</summary>
 
 Version 5 adds a second hidden layer and propagates gradients through the complete network.
-
-Architecture:
-
-```text
-784 inputs → 128 ReLU neurons → 64 ReLU neurons → 10 softmax outputs
-```
 
 It combines the ideas developed in the earlier versions:
 
@@ -313,21 +184,8 @@ It combines the ideas developed in the earlier versions:
 - He-style initialization;
 - ReLU hidden activations;
 - softmax output probabilities;
-- multiclass cross-entropy;
-- mini-batch gradient descent;
-- data shuffling;
-- forward propagation through three parameterized layers;
-- backpropagation through both hidden layers.
 
-Saved notebook results:
-
-```text
-Training loss      → 0.0145
-Training accuracy  → 99.59%
-Test accuracy      → 89.92%
-```
-
-![Version 5](v5-simple-deep-neural-network/Version%205.png)
+</details>
 
 ## Results
 
@@ -343,71 +201,7 @@ The Version 1 result is not directly comparable with Versions 2-5 because it use
 
 The project is intentionally educational rather than benchmark-oriented, so the architectures and hyperparameters are kept simple and the versions are designed primarily to expose one new concept at a time.
 
-## Documentation
-
-The repository includes general documentation in both English and Italian:
-
-- [General Project Report - English](project-report-en.pdf)
-- [Relazione Generale del Progetto - Italiano](project-report-it.pdf)
-
-Each version also contains:
-
-- the complete Jupyter notebook;
-- an English version report;
-- an Italian version report;
-- a version-specific infographic.
-
-Version folders:
-
-- [`v1-simple-single-neuron/`](v1-simple-single-neuron/)
-- [`v2-multiclass-neural-network/`](v2-multiclass-neural-network/)
-- [`v3-single-hidden-layer-network/`](v3-single-hidden-layer-network/)
-- [`v4-mini-batch-neural-network/`](v4-mini-batch-neural-network/)
-- [`v5-simple-deep-neural-network/`](v5-simple-deep-neural-network/)
-
-## Repository structure
-
-```text
-building-neural-networks/
-│
-├── v1-simple-single-neuron/
-│   ├── building-neural-networks.ipynb
-│   ├── Relazione Versione 1 - Neurone Singolo Semplice.pdf
-│   ├── Report Version 1 - Simple Single Neuron.pdf
-│   └── Version 1.png
-│
-├── v2-multiclass-neural-network/
-│   ├── building-neural-networks.ipynb
-│   ├── Relazione Versione 2 - Rete Neurale Multiclasse.pdf
-│   ├── Report Version 2 - Multiclass Neural Network.pdf
-│   └── Version 2.png
-│
-├── v3-single-hidden-layer-network/
-│   ├── building-neural-networks.ipynb
-│   ├── Relazione Versione 3 - Rete con un Layer Nascosto.pdf
-│   ├── Report Version 3 - Single Hidden Layer Network.pdf
-│   └── Version 3.png
-│
-├── v4-mini-batch-neural-network/
-│   ├── building-neural-networks.ipynb
-│   ├── Relazione Versione 4 - Rete Neurale Mini-Batch.pdf
-│   ├── Report Version 4 - Mini-Batch Neural Network.pdf
-│   └── Version 4.png
-│
-├── v5-simple-deep-neural-network/
-│   ├── building-neural-networks.ipynb
-│   ├── Relazione Versione 5 - Rete Neurale Profonda Semplice.pdf
-│   ├── Report Version 5 - Simple Deep Neural Network.pdf
-│   └── Version 5.png
-│
-├── infographic.png
-├── project-report-en.pdf
-├── project-report-it.pdf
-├── README.md
-└── LICENSE
-```
-
-## Run locally
+## Getting started
 
 ### Requirements
 
@@ -462,45 +256,17 @@ v5-simple-deep-neural-network/building-neural-networks.ipynb
 
 The dataset itself is not included in this repository.
 
-## Development approach
+## Repository structure
 
-The project follows one main principle:
+Each version is kept in its own folder with the corresponding notebook and, where available, version-specific diagrams and reports.
 
-> **One version, one major concept.**
+## Documentation
 
-Instead of starting with a complete deep-learning framework implementation, each version introduces only the next mechanism required to understand how neural networks learn.
+- [Project report (English)](project-report-en.pdf)
+- [Relazione del progetto (Italiano)](project-report-it.pdf)
+- [Project infographic](infographic.png)
 
-The progression is deliberately cumulative:
-
-```text
-single neuron
-    ↓
-multiclass softmax
-    ↓
-hidden layer + backpropagation
-    ↓
-mini-batch training
-    ↓
-deeper neural network
-```
-
-Each completed version remains available as an independent learning resource.
-
-The focus is algorithmic understanding rather than benchmark optimization. Fashion-MNIST provides a consistent practical dataset while the notebooks keep every important learning step explicit and inspectable.
-
-## Roadmap
-
-- [x] Version 1 - Simple Single Neuron
-- [x] Version 2 - Multiclass Neural Network
-- [x] Version 3 - Single Hidden Layer Network
-- [x] Version 4 - Mini-Batch Neural Network
-- [x] Version 5 - Simple Deep Neural Network
-
-The original V1-V5 roadmap is complete.
-
-## Current limitations
-
-Version 5 is intentionally small and educational:
+## Limitations
 
 - the implementation is written for clarity rather than computational efficiency;
 - neural-network layers are implemented directly with matrix operations rather than framework APIs;
@@ -511,9 +277,6 @@ Version 5 is intentionally small and educational:
 - there are no convolutional layers, even though Fashion-MNIST is an image dataset;
 - there are no adaptive optimizers such as Adam or RMSprop;
 - there is no learning-rate scheduling;
-- the implementation is not intended to reproduce TensorFlow, PyTorch or another production deep-learning framework.
-
-These limitations are intentional. The project was designed to expose the mechanics of neural-network learning clearly rather than maximize predictive performance or training speed.
 
 ## Project status
 
@@ -523,19 +286,9 @@ The repository now contains the full educational path from a single binary neuro
 
 Version 1 establishes the basic learning loop with sigmoid activation, binary cross-entropy and analytical gradients.
 
-Versions 2 through 4 progressively generalize the architecture and training process by adding multiclass softmax, a hidden layer with backpropagation and mini-batch gradient descent.
-
-Version 5 closes the roadmap by showing how gradients can be propagated through two hidden layers inside a deeper network.
-
-The project can remain finished in this form. Documentation, compatibility fixes or small maintenance updates may still be made when useful.
-
-At the same time, the repository is intentionally not declared permanently frozen. If a future concept is worth studying with the same **one version, one major concept** philosophy, Building Neural Networks may one day receive additional versions beyond Version 5.
-
-There is currently no required Version 6: any future continuation would be a new extension of an already completed project.
-
 ## License
 
-This project is distributed under the [MIT License](LICENSE).
+Distributed under the [MIT License](LICENSE).
 
 ## Author
 
